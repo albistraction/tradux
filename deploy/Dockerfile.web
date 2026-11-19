@@ -1,0 +1,17 @@
+# Editor de DE-PARA (arquivos estáticos + /config.js com o endereço da API).
+# Build a partir da raiz do repositório:
+#   docker build -f deploy/Dockerfile.web -t tradux-mapping-editor .
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY global.json Directory.Build.props ./
+COPY src/Tradux.Web/ src/Tradux.Web/
+RUN dotnet publish src/Tradux.Web/Tradux.Web.csproj -c Release -o /app --nologo
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app ./
+ENV ASPNETCORE_URLS=http://+:8080 \
+    ASPNETCORE_ENVIRONMENT=Production
+EXPOSE 8080
+USER $APP_UID
+ENTRYPOINT ["dotnet", "Tradux.Web.dll"]

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Editor visual (Fase 6): host estático de HTML/CSS/JavaScript simples
+    (seção 7 do requisito de origem). Fala com a API só por HTTP — nenhuma
+    ProjectReference para projetos internos (CONTAINERS.md; protegido por
+    Tradux.ArchitectureTests).
+  -->
+  <ItemGroup>
+    <!-- Metadados de teste Node (node - -test) não são publicados. -->
+    <Content Remove="package.json" />
+    <None Include="package.json" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+{
+  "name": "tradux-mapping-web",
+  "private": true,
+  "type": "module",
+  "description": "Editor visual (HTML/CSS/JS simples). Sem dependências; testes dos módulos puros com o runner nativo do Node.",
+  "scripts": {
+    "test": "node --test \"../../tests/Tradux.Web.Tests/*.test.mjs\""
+  }
+}

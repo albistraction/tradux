@@ -1,0 +1,22 @@
+// Registro de fontes aprovadas para o RAG (seção 24, ADR-0013 §9).
+// Caminhos relativos à raiz do repositório; "*" no nome do arquivo expande
+// uma fonte por arquivo (source_id = "<sourceId>:<nome do arquivo>").
+// O catálogo de operadores ("operator-catalog") é gerado do motor pelo host,
+// não vem de arquivo. Suba "version" quando a fonte mudar de forma relevante.
+[
+  { "sourceId": "req-master-prompt", "path": "docs/requirements/PROMPT_MESTRE_CLAUDE.md", "sourceType": "requirement", "version": "1.0", "effectiveDate": "2026-09-28" },
+  { "sourceId": "requirements-map", "path": "docs/REQUIREMENTS.md", "sourceType": "requirement", "version": "1.0", "effectiveDate": "2026-09-28" },
+  { "sourceId": "adr", "path": "docs/architecture/adrs/ADR-*.md", "sourceType": "adr", "version": "phase-18", "effectiveDate": "2026-10-09" },
+  { "sourceId": "decisions", "path": "docs/DECISIONS.md", "sourceType": "adr", "version": "phase-20", "effectiveDate": "2026-10-13" },
+  { "sourceId": "glossary", "path": "docs/GLOSSARY.md", "sourceType": "glossary", "version": "1.0", "effectiveDate": "2026-09-28" },
+  { "sourceId": "domain-model", "path": "docs/domain/DOMAIN_MODEL.md", "sourceType": "domain", "version": "1.0", "effectiveDate": "2026-09-28" },
+  { "sourceId": "architecture", "path": "docs/architecture/*.md", "sourceType": "architecture", "version": "1.0", "effectiveDate": "2026-09-28" },
+  { "sourceId": "operations-mongodb", "path": "docs/operations/MONGODB_E_CACHE.md", "sourceType": "operations", "version": "phase-7", "effectiveDate": "2026-09-30" },
+  { "sourceId": "operations-performance", "path": "docs/operations/PERFORMANCE.md", "sourceType": "operations", "version": "phase-11", "effectiveDate": "2026-09-30" },
+  { "sourceId": "threat-model", "path": "docs/operations/THREAT_MODEL.md", "sourceType": "operations", "version": "1.0", "accessLevel": "Restricted", "effectiveDate": "2026-09-28" },
+  { "sourceId": "schema", "path": "docs/schemas/*.xsd", "sourceType": "xsd", "version": "fixtures-1", "schemaVersion": "ilustrativo-1", "effectiveDate": "2026-09-28" },
+  { "sourceId": "schema-analysis", "path": "docs/schemas/*.ANALISE.md", "sourceType": "domain", "version": "fixtures-1", "effectiveDate": "2026-09-28" },
+  { "sourceId": "api-reference", "path": "docs/api/README.md", "sourceType": "api", "version": "phase-20", "effectiveDate": "2026-10-13" },
+  { "sourceId": "api-consumers", "path": "docs/api/CONSUMERS.md", "sourceType": "api", "version": "phase-17", "effectiveDate": "2026-10-09" },
+  { "sourceId": "runbook", "path": "docs/runbooks/*.md", "sourceType": "runbook", "version": "phase-11", "effectiveDate": "2026-09-30" }
+]

@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!--
+    Fase 22 (ADR-0025): o produto é só o microsserviço (API + editor) — nenhum
+    projeto vira pacote NuGet/DLL para integrar.
+  -->
+  <PropertyGroup>
+    <Version>0.7.0</Version>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tradux.Domain\Tradux.Domain.csproj" />
+    <ProjectReference Include="..\Tradux.Xsd\Tradux.Xsd.csproj" />
+  </ItemGroup>
+
+</Project>

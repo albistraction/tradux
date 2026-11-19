@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    RAG documental (seção 24, ADR-0013): apoio à engenharia e ao editor.
+    Sem referência a projeto algum da solução — o motor de geração nunca o
+    usa e ele nunca alcança o motor (teste de arquitetura).
+  -->
+</Project>

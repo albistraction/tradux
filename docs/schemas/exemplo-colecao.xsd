@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Criada na Fase 4 do projeto Tradux exclusivamente para provar geracao
+  de XML com colecao repetivel (bloco de iteracao, secao 14 do requisito de
+  origem) SEM misturar com xs:choice — exemplo-composto.xsd (Fase 3) tem os
+  dois juntos (tomador é choice, itens é colecao), o que serviria para
+  provar IMPORTACAO da Fase 3, mas nao serve para provar GERACAO da Fase 4
+  isoladamente, ja que resolucao de choice continua fora de escopo do motor
+  de regras nesta fase. Este fixture isola a colecao.
+
+  Nao usar como referencia normativa fiscal.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/pedido-colecao/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/pedido-colecao/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:simpleType name="ValorMonetarioType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="999999999.99"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ItemPedidoType">
+    <xs:sequence>
+      <xs:element name="descricao" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="valorUnitario" type="tns:ValorMonetarioType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="PedidoComItens" type="tns:PedidoType"/>
+
+  <xs:complexType name="PedidoType">
+    <xs:sequence>
+      <xs:element name="numero" type="xs:string" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="itens" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Envelope obrigatorio, nao repetivel. Quem repete e "item" dentro
+            dele (minOccurs=0, maxOccurs=unbounded) — mesma forma de
+            exemplo-composto.xsd, sem o choice de "tomador".
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="tns:ItemPedidoType" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="valorTotal" type="tns:ValorMonetarioType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+
+    <xs:attribute name="versao" use="required" fixed="1.00"/>
+  </xs:complexType>
+
+</xs:schema>

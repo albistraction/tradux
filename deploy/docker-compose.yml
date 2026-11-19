@@ -1,0 +1,51 @@
+# Microsserviço tradutor de XML (ADR-0025): MongoDB (replica set de 1 nó),
+# API e editor. Uso, a partir da raiz do repositório:
+#   cp deploy/.env.example deploy/.env   # e defina o hash da credencial
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up --build
+# API: http://localhost:8080   Editor: http://localhost:8081
+name: tradux-mapping
+
+services:
+  mongo:
+    image: mongo:8.0
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo-data:/data/db
+    # Inicia o replica set na primeira vez (o motor exige transações e change streams — ADR-0005).
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "try { rs.status().ok } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }).ok }"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      Tradux__MongoDb__ConnectionString: "mongodb://mongo:27017/?replicaSet=rs0"
+      Tradux__Cors__AllowedOrigins__0: "${EDITOR_ORIGIN:-http://localhost:8081}"
+      # Credencial administrativa inicial: só o SHA-256 do segredo (ADR-0012 §5), nunca o segredo.
+      Tradux__Security__BootstrapCredentials__0__OrganizationId: "${TRADUX_ORGANIZATION:-org-a}"
+      Tradux__Security__BootstrapCredentials__0__Name: "admin"
+      Tradux__Security__BootstrapCredentials__0__SecretSha256: "${TRADUX_ADMIN_SECRET_SHA256:?defina TRADUX_ADMIN_SECRET_SHA256 (deploy/.env.example)}"
+      Tradux__Security__BootstrapCredentials__0__Roles__0: "admin"
+
+  editor:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.web
+    depends_on:
+      - api
+    ports:
+      - "8081:8080"
+    environment:
+      Editor__ApiBaseUrl: "${API_PUBLIC_URL:-http://localhost:8080}"
+
+volumes:
+  mongo-data:

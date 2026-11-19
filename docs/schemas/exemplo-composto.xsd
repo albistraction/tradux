@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Este arquivo foi criado sinteticamente pelo agente domain-xsd na Fase 1
+  do projeto Tradux, exclusivamente para servir de fixture-alvo da
+  Fase 3 (XSD completo e contratos compostos: include/import, sequence/
+  choice/all, namespaces, cardinalidade e nulabilidade combinadas).
+
+  Inclui exemplo-composto-tipos.xsd via xsd:include (mesmo target namespace),
+  exclusivamente para exercitar a resolucao de include. Qualquer semelhanca
+  com um leiaute real de DPS de uma prefeitura ou fornecedor especifico e
+  coincidencia. Nao usar como referencia normativa fiscal.
+
+  Ver analise estrutural completa em: exemplo-composto.ANALISE.md
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/dps-composto/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/dps-composto/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:include schemaLocation="exemplo-composto-tipos.xsd"/>
+
+  <xs:annotation>
+    <xs:documentation>
+      Fixture ilustrativa e sintetica de uma DPS composta, com choice real de
+      identificacao do tomador e uma coleção repetível de itens de serviço.
+      Nao representa nenhum layout municipal ou de fornecedor real.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ==================== Elemento raiz ==================== -->
+
+  <xs:element name="DpsComposta" type="tns:DpsCompostaType"/>
+
+  <xs:complexType name="DpsCompostaType">
+    <xs:sequence>
+
+      <xs:element name="numero" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="dataEmissao" type="xs:date" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="tomador" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            CASO DE BORDA PROPOSITAL: choice real. O tomador e identificado
+            por exatamente UMA das duas formas abaixo — nunca as duas, nunca
+            nenhuma. Cada ramo implica uma estrutura de XML final distinta;
+            o motor de mapeamento precisa decidir o ramo em tempo de geracao
+            e nao pode emitir os dois simultaneamente nem misturar campos de
+            ramos diferentes.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:choice minOccurs="1" maxOccurs="1">
+
+            <xs:element name="tomadorPorDocumento" minOccurs="1" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Ramo 1: identificacao por CPF/CNPJ. Implica emitir o
+                  elemento tomadorPorDocumento com cpfCnpj obrigatorio e
+                  razaoSocial opcional.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="cpfCnpj" type="tns:CpfCnpjType" minOccurs="1" maxOccurs="1"/>
+                  <xs:element name="razaoSocial" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="tomadorPorCadastroMunicipal" minOccurs="1" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Ramo 2: identificacao por inscricao municipal + codigo do
+                  municipio (tomador sem CPF/CNPJ cadastrado, ex.: orgao
+                  publico ou tomador estrangeiro em cenarios ilustrativos).
+                  Implica emitir tomadorPorCadastroMunicipal em vez do ramo 1.
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="inscricaoMunicipal" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                  <xs:element name="codigoMunicipio" minOccurs="1" maxOccurs="1">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:pattern value="\d{7}"/>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="itens" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Envelope obrigatorio da coleção de itens. O envelope em si nao e
+            repetivel; quem repete e o elemento "item" dentro dele.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="item" type="tns:ItemServicoType"
+                        minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>
+                  CASO DE BORDA PROPOSITAL: coleção repetível verdadeira
+                  (minOccurs=0, maxOccurs=unbounded). Zero itens e uma DPS
+                  composta sintaticamente valida mas semanticamente estranha
+                  (sem servico algum) — o motor de regras/QA deve decidir se
+                  trata isso como aviso de negocio, nao como erro de schema.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="valorTotal" type="tns:ValorMonetarioType" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="valorDeducao" type="tns:ValorMonetarioType"
+                  minOccurs="1" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            CASO DE BORDA PROPOSITAL (par 1 de 2 desta distincao):
+            OBRIGATORIO (minOccurs=1) e NILLABLE (nillable=true). O elemento
+            sempre precisa aparecer no XML; seu conteudo pode ser
+            explicitamente xsi:nil="true" quando nao ha deducao apurada,
+            distinto de valor zero.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="dataCancelamento" type="xs:date" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            CASO DE BORDA PROPOSITAL (par 2 de 2 desta distincao): apenas
+            OPCIONAL (minOccurs=0), sem nillable declarado (default=false).
+            Pode estar totalmente AUSENTE do XML quando a DPS nao foi
+            cancelada, mas se o elemento estiver presente ele NAO pode
+            carregar xsi:nil — precisa ter uma data valida. Contraste
+            deliberado com valorDeducao acima: ausência (minOccurs=0) e
+            nulidade explícita (nillable=true) são conceitos diferentes e
+            nunca devem ser colapsados em um único booleano no modelo
+            canônico do motor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="observacao" type="xs:string" minOccurs="0" maxOccurs="1"/>
+
+    </xs:sequence>
+
+    <xs:attribute name="versao" use="required" fixed="1.00"/>
+  </xs:complexType>
+
+</xs:schema>

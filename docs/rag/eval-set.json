@@ -1,0 +1,22 @@
+[
+  { "question": "Como revogar uma credencial vazada da API?", "expectedSources": ["runbook:CREDENCIAIS_E_CHAVES", "adr:ADR-0012-seguranca-autorizacao-observabilidade"] },
+  { "question": "Como promover um template de homologação para produção usando pacote portátil?", "expectedSources": ["runbook:PROMOCAO_POR_PACOTE", "adr:ADR-0013-pacotes-rag-documentacao"] },
+  { "question": "O que fazer quando a geração falha com XSD_VALIDATION_TIMEOUT?", "expectedSources": ["runbook:INCIDENTES", "adr:ADR-0012-seguranca-autorizacao-observabilidade"] },
+  { "question": "Qual operador formata datas no mapeamento?", "expectedSources": ["operator-catalog"] },
+  { "question": "O que é a camada de cliente?", "expectedSources": ["glossary", "adr:ADR-0006-formato-template-camadas", "adr:ADR-0010-camadas-publicacao-atualizacao"] },
+  { "question": "Como funciona a invalidação do cache de snapshots compilados com Change Streams?", "expectedSources": ["adr:ADR-0005-cache-invalidacao-atomica", "operations-mongodb", "runbook:INCIDENTES"] },
+  { "question": "Quais permissões por ação existem como template.publish e diagnostic.capture?", "expectedSources": ["req-master-prompt", "adr:ADR-0012-seguranca-autorizacao-observabilidade", "api-reference", "runbook:CREDENCIAIS_E_CHAVES"] },
+  { "question": "Como funciona o fallback entre versões candidatas na geração?", "expectedSources": ["adr:ADR-0010-camadas-publicacao-atualizacao", "api-reference", "api-consumers", "req-master-prompt"] },
+  { "question": "Como ligar a captura diagnóstica mascarada e criptografada?", "expectedSources": ["runbook:CAPTURA_DIAGNOSTICA", "adr:ADR-0012-seguranca-autorizacao-observabilidade", "api-reference"] },
+  { "question": "Qual o pattern do cnpjPrestador no schema da DPS?", "expectedSources": ["schema:exemplo-simples", "schema-analysis:exemplo-simples.ANALISE"] },
+  { "question": "Quais testes estruturais automáticos a suíte gera com dados sintéticos?", "expectedSources": ["adr:ADR-0011-qualidade-automatizada", "req-master-prompt", "api-reference"] },
+  { "question": "Como fazer rollback para a versão anterior de um template?", "expectedSources": ["runbook:ROLLBACK_E_ATUALIZACOES", "adr:ADR-0010-camadas-publicacao-atualizacao", "api-reference"] },
+  { "question": "Quais containers e componentes compõem a arquitetura da solução?", "expectedSources": ["architecture:CONTAINERS", "architecture:COMPONENTS", "architecture:SYSTEM_CONTEXT", "adr:ADR-0007-arquitetura-geral"] },
+  { "question": "Como o editor visual testa um rascunho com XML esperado?", "expectedSources": ["adr:ADR-0009-editor-visual", "api-reference", "api-consumers"] },
+  { "question": "Quais configurações são obrigatórias para subir a API em produção?", "expectedSources": ["runbook:INSTALACAO_E_CONFIGURACAO"] },
+  { "question": "Por que o motor compila os templates em vez de interpretar a cada geração?", "expectedSources": ["adr:ADR-0001-motor-compila-templates", "decisions"] },
+  { "question": "O que fazer quando o MongoDB cai e a API responde 503 com Retry-After?", "expectedSources": ["runbook:FALHAS_E_RECUPERACAO", "runbook:INCIDENTES", "adr:ADR-0014-performance-resiliencia-prontidao"] },
+  { "question": "Quantas gerações por minuto uma instância sustenta e qual o p99 medido na carga?", "expectedSources": ["operations-performance", "adr:ADR-0014-performance-resiliencia-prontidao"] },
+  { "question": "Quais são os limites de profundidade, nós e tamanho de texto da entrada de geração?", "expectedSources": ["adr:ADR-0014-performance-resiliencia-prontidao", "runbook:FALHAS_E_RECUPERACAO", "api-reference", "runbook:INSTALACAO_E_CONFIGURACAO"] },
+  { "question": "Como transformar um XML de origem no formato do meu XSD em XML do XSD de destino?", "expectedSources": ["api-consumers", "adr:ADR-0015-contrato-origem-xsd-entrada-xml", "api-reference"] }
+]

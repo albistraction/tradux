@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tradux.Domain\Tradux.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- XML-DSig do W3C (variante dos pacotes fiscais): usado quando o XSD referencia ds:Signature sem enviá-lo. -->
+    <EmbeddedResource Include="Schemas\xmldsig-core-schema.xsd" LogicalName="Tradux.Xsd.xmldsig-core-schema.xsd" />
+  </ItemGroup>
+
+</Project>

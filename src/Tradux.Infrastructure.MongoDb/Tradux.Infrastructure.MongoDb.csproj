@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tradux.Domain\Tradux.Domain.csproj" />
+    <ProjectReference Include="..\Tradux.Application\Tradux.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.12.0" />
+  </ItemGroup>
+
+</Project>

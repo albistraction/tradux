@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Modulo "B" (elemento raiz), em namespace proprio, que importa o modulo "A"
+  (exemplo-import-ns-a.xsd, namespace diferente) via xs:import e reusa seu
+  tipo complexo EnderecoType. Fixture-alvo dos testes de xs:import
+  cross-namespace da Fase 3 do projeto Tradux. Nao usar como referencia
+  normativa fiscal.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/import-b/v1"
+           xmlns:end="http://exemplo.ilustrativo.tradux/import-a/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/import-b/v1"
+           elementFormDefault="qualified">
+
+  <xs:import namespace="http://exemplo.ilustrativo.tradux/import-a/v1"
+             schemaLocation="exemplo-import-ns-a.xsd"/>
+
+  <xs:element name="DocumentoComImport" type="tns:DocumentoComImportType"/>
+
+  <xs:complexType name="DocumentoComImportType">
+    <xs:sequence>
+      <xs:element name="numero" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="endereco" type="end:EnderecoType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="versao" use="required" fixed="1.00"/>
+  </xs:complexType>
+
+</xs:schema>

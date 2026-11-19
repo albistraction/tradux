@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tradux — tradutor de XML</title>
+  <link rel="stylesheet" href="css/editor.css">
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <!-- Estrutura: topo, menu lateral e conteúdo. -->
+  <div class="estrutura">
+    <div class="topo-esquerda">
+      <h1>Tradux <span>tradutor de XML</span></h1>
+    </div>
+    <header class="app-header topo">
+      <nav id="nav-actions" class="draft-actions" aria-label="Template"></nav>
+      <div id="status-bar" class="status-bar" aria-live="polite"></div>
+      <div class="credential" role="group" aria-label="Credencial da API">
+        <label for="api-key">Credencial da API</label>
+        <input type="password" id="api-key" autocomplete="off" spellcheck="false" placeholder="tradux_…">
+        <button type="button" id="btn-connect">Conectar</button>
+      </div>
+    </header>
+
+    <!-- Tela inicial: templates do serviço (versionados por ele) e criação de um novo DE-PARA. -->
+    <main id="home-view" class="home conteudo-inteiro" aria-labelledby="home-title"></main>
+
+    <aside id="editor-menu" class="column left menu-lateral" aria-label="Schemas" hidden>
+      <section class="painel-menu">
+        <h2>1. XSD de origem</h2>
+        <div id="source-schema-panel" class="painel-menu-conteudo"></div>
+      </section>
+      <section class="painel-menu">
+        <h2>2. XSD de destino</h2>
+        <div id="schema-panel" class="painel-menu-conteudo"></div>
+      </section>
+      <section class="painel-menu grow">
+        <h2>Campos de origem</h2>
+        <div id="source-panel" class="painel-menu-conteudo scroll"></div>
+      </section>
+      <section class="painel-menu">
+        <h2>Tabelas DE-PARA</h2>
+        <div id="tables-panel" class="painel-menu-conteudo"></div>
+      </section>
+    </aside>
+
+    <main id="editor-view" class="layout conteudo" hidden>
+      <section class="column center card" aria-labelledby="dest-title">
+        <h2 id="dest-title">3. DE-PARA: campos de destino</h2>
+        <p class="hint">Arraste um campo de origem para um campo de destino, ou selecione o destino e clique na origem.</p>
+        <div id="changes-panel"></div>
+        <div id="destination-panel" class="scroll"></div>
+      </section>
+
+      <section class="column right card" aria-labelledby="rule-title">
+        <h2 id="rule-title">Regra</h2>
+        <div id="rule-panel" class="scroll"></div>
+      </section>
+
+      <section class="bottom card" aria-labelledby="test-title">
+        <h2 id="test-title">4. Testar</h2>
+        <div id="test-panel"></div>
+      </section>
+
+      <section class="publish card" aria-labelledby="publish-title">
+        <h2 id="publish-title">5. Publicar</h2>
+        <div id="publish-panel"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

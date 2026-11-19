@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tradux.Domain\Tradux.Domain.csproj" />
+    <ProjectReference Include="..\Tradux.Engine\Tradux.Engine.csproj" />
+    <ProjectReference Include="..\Tradux.Xsd\Tradux.Xsd.csproj" />
+    <ProjectReference Include="..\Tradux.Contracts\Tradux.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- SnapshotPublisher é interno (ADR-0011 §5): fora de Application só se publica pelos gates. -->
+    <InternalsVisibleTo Include="Tradux.Application.Tests" />
+    <InternalsVisibleTo Include="Tradux.Api.IntegrationTests" />
+  </ItemGroup>
+
+</Project>

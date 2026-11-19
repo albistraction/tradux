@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Este arquivo foi criado sinteticamente pelo agente domain-xsd na Fase 1
+  do projeto Tradux, exclusivamente para servir de fixture-alvo da Fase 2
+  (vertical slice do motor: XSD unico, arvore interna tipada, mapeamento
+  escalar direto, geracao e validacao de XML).
+
+  Qualquer semelhanca com um leiaute real de DPS (Declaracao de Prestacao de
+  Servicos) de uma prefeitura ou fornecedor especifico e coincidencia. Nao
+  usar este arquivo como referencia normativa de nenhum municipio. Quando um
+  XSD real de prefeitura/fornecedor for fornecido pelo usuario do projeto,
+  ele deve ser adicionado ao lado deste (nao substituir este fixture) e
+  registrado com sua propria analise.
+
+  Ver analise estrutural completa em: exemplo-simples.ANALISE.md
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/dps/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/dps/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      Fixture ilustrativa e sintetica de uma DPS minimalista. Nao representa
+      nenhum layout municipal ou de fornecedor real. Uso: fixture-alvo da
+      Fase 2 do projeto Tradux.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ==================== Tipos simples ==================== -->
+
+  <xs:simpleType name="Cnpj14Type">
+    <xs:annotation>
+      <xs:documentation>
+        CNPJ representado como 14 digitos, sem mascara. Nao valida digito
+        verificador (isso e regra de negocio, nao restricao de schema).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{14}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CodigoServicoType">
+    <xs:annotation>
+      <xs:documentation>
+        Codigo de servico no formato NN.NN.NN (dois digitos, ponto, dois
+        digitos, ponto, dois digitos) — inspirado livremente em listas de
+        servico LC116, mas sem qualquer pretensao de exatidao fiscal.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{2}\.\d{2}\.\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValorMonetarioType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="999999999.99"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SituacaoDpsType">
+    <xs:annotation>
+      <xs:documentation>
+        Enumeracao pequena e ilustrativa de situacao do documento.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="1">
+        <xs:annotation><xs:documentation>Normal</xs:documentation></xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="2">
+        <xs:annotation><xs:documentation>Cancelada</xs:documentation></xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="3">
+        <xs:annotation><xs:documentation>Substituida</xs:documentation></xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ==================== Elemento raiz ==================== -->
+
+  <xs:element name="DPS" type="tns:DpsType"/>
+
+  <xs:complexType name="DpsType">
+    <xs:sequence>
+      <xs:element name="numero" type="xs:string" minOccurs="1" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Numero do documento. Obrigatorio.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="serie" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Serie do documento. Opcional (minOccurs=0) — pode simplesmente
+            estar ausente do XML. Nao aceita xsi:nil (nillable nao declarado,
+            default = false): se presente, precisa ter conteudo textual.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="5"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="dataEmissao" type="xs:date" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="competencia" type="xs:gYearMonth" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Competencia (ano-mes). Opcional.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="valorServico" type="tns:ValorMonetarioType" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="valorDesconto" type="tns:ValorMonetarioType"
+                  minOccurs="1" maxOccurs="1" nillable="true">
+        <xs:annotation>
+          <xs:documentation>
+            CASO DE BORDA PROPOSITAL: elemento OBRIGATORIO (minOccurs=1) que
+            tambem aceita xsi:nil="true" (nillable=true). Ou seja, o elemento
+            deve sempre aparecer no XML, mas seu conteudo pode ser
+            explicitamente nulo (quando nao ha desconto apurado) em vez de
+            zero. Isso e deliberadamente diferente de "serie" acima, que e
+            apenas opcional (pode faltar, mas se presente nao pode ser nulo).
+            Nunca tratar "opcional" e "aceita nulo" como sinonimos.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="codigoServico" type="tns:CodigoServicoType" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="cnpjPrestador" type="tns:Cnpj14Type" minOccurs="1" maxOccurs="1"/>
+
+      <xs:element name="cnpjTomador" type="tns:Cnpj14Type" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>
+            Tomador identificado por CNPJ. Opcional nesta fixture simples
+            (o caso "tomador por mais de uma forma de identificacao" so e
+            exercitado no fixture composto, via choice).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="discriminacaoServico" type="xs:string" minOccurs="0" maxOccurs="1">
+        <xs:annotation>
+          <xs:documentation>Texto livre. Opcional.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+
+      <xs:element name="codigoSituacao" type="tns:SituacaoDpsType"
+                  minOccurs="1" maxOccurs="1" default="1"/>
+    </xs:sequence>
+
+    <xs:attribute name="versao" use="required" fixed="1.00">
+      <xs:annotation>
+        <xs:documentation>
+          CASO DE BORDA PROPOSITAL: atributo obrigatorio (use="required") com
+          valor fixo (fixed="1.00") em um elemento que, como um todo, e
+          opcional/obrigatorio na arvore de origem — atributos obrigatorios
+          com valor fixo ainda assim precisam ser emitidos no XML gerado.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\d\.\d{2}"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+
+    <xs:attribute name="id" type="xs:ID" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Identificador local opcional, tipo xs:ID (unico no documento) —
+          exercita atributo opcional com tipo de identidade XML.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+</xs:schema>

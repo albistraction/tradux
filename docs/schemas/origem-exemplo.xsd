@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA DE CONTRATO DE ORIGEM (Fase 12, ADR-0015) — NAO E UM
+  LAYOUT REAL. Representa o XML que um ERP exporta para ser mapeado para o
+  XSD de destino exemplo-simples.xsd (DPS ilustrativa). Estrutura diferente
+  da do destino de proposito: agrupamentos, atributos, conteudo simples com
+  atributo, tipos int/decimal, elemento nulavel e uma colecao.
+  Exemplo de instancia: origem-exemplo.xml.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:erp="http://exemplo.ilustrativo.tradux/erp/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/erp/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:simpleType name="Cnpj14">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{14}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Valor">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ValorComMoeda">
+    <xs:simpleContent>
+      <xs:extension base="erp:Valor">
+        <xs:attribute name="moeda" type="xs:string" use="optional" default="BRL"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Pessoa">
+    <xs:sequence>
+      <xs:element name="Cnpj" type="erp:Cnpj14"/>
+      <xs:element name="Nome" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="NotaErp">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Identificacao">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Numero" type="xs:string"/>
+              <xs:element name="Serie" type="xs:string" minOccurs="0"/>
+              <xs:element name="DataEmissao" type="xs:date"/>
+              <xs:element name="Competencia" type="xs:gYearMonth" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Prestador" type="erp:Pessoa"/>
+        <xs:element name="Tomador" type="erp:Pessoa" minOccurs="0"/>
+        <xs:element name="Servico">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Codigo" type="xs:string"/>
+              <xs:element name="Discriminacao" type="xs:string" minOccurs="0"/>
+              <xs:element name="Valor" type="erp:ValorComMoeda"/>
+              <xs:element name="Desconto" type="erp:Valor" nillable="true"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Itens" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Item" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Descricao" type="xs:string"/>
+                    <xs:element name="Quantidade" type="xs:int"/>
+                    <xs:element name="ValorUnitario" type="erp:Valor"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="versao" type="xs:string" use="required"/>
+      <xs:attribute name="situacao" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

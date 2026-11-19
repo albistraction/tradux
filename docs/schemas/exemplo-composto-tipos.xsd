@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Modulo de TIPOS COMPARTILHADOS, incluido por exemplo-composto.xsd via
+  xsd:include (mesmo target namespace). Existe apenas para exercitar
+  resolucao de include/import na Fase 3 do projeto Tradux. Nao usar como
+  referencia normativa de nenhum municipio real.
+
+  Ver analise estrutural completa em: exemplo-composto.ANALISE.md
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/dps-composto/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/dps-composto/v1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:annotation>
+    <xs:documentation>
+      Tipos simples e complexos compartilhados do fixture composto ilustrativo.
+      Arquivo incluido por exemplo-composto.xsd via xsd:include (mesmo
+      namespace-alvo). Fixture sintetica, sem valor normativo fiscal.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="CpfCnpjType">
+    <xs:annotation>
+      <xs:documentation>
+        Documento do tomador: 11 digitos (CPF) ou 14 digitos (CNPJ), sem
+        mascara. Nao valida digito verificador.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\d{11}|\d{14})"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CodigoServicoType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{2}\.\d{2}\.\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValorMonetarioType">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="999999999.99"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="QuantidadeType">
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+      <xs:fractionDigits value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ItemServicoType">
+    <xs:annotation>
+      <xs:documentation>
+        Item de uma coleção repetível de serviços dentro de uma DPS composta.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="descricao" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="codigoServico" type="tns:CodigoServicoType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="quantidade" type="tns:QuantidadeType" minOccurs="0" maxOccurs="1" default="1">
+        <xs:annotation>
+          <xs:documentation>
+            Opcional (minOccurs=0), com default="1" aplicado pelo schema
+            quando ausente — nao confundir com nillable.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="valorUnitario" type="tns:ValorMonetarioType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

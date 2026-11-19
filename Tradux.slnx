@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Tradux.Api/Tradux.Api.csproj" />
+    <Project Path="src/Tradux.Application/Tradux.Application.csproj" />
+    <Project Path="src/Tradux.Contracts/Tradux.Contracts.csproj" />
+    <Project Path="src/Tradux.Domain/Tradux.Domain.csproj" />
+    <Project Path="src/Tradux.Engine/Tradux.Engine.csproj" />
+    <Project Path="src/Tradux.Infrastructure.MongoDb/Tradux.Infrastructure.MongoDb.csproj" />
+    <Project Path="src/Tradux.Knowledge/Tradux.Knowledge.csproj" />
+    <Project Path="src/Tradux.Web/Tradux.Web.csproj" />
+    <Project Path="src/Tradux.Xsd/Tradux.Xsd.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Tradux.Api.IntegrationTests/Tradux.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Tradux.Application.Tests/Tradux.Application.Tests.csproj" />
+    <Project Path="tests/Tradux.ArchitectureTests/Tradux.ArchitectureTests.csproj" />
+    <Project Path="tests/Tradux.Domain.Tests/Tradux.Domain.Tests.csproj" />
+    <Project Path="tests/Tradux.Engine.Tests/Tradux.Engine.Tests.csproj" />
+    <Project Path="tests/Tradux.Knowledge.Tests/Tradux.Knowledge.Tests.csproj" />
+    <Project Path="tests/Tradux.Web.Tests/Tradux.Web.Tests.csproj" />
+    <Project Path="tests/Tradux.Xsd.Tests/Tradux.Xsd.Tests.csproj" />
+  </Folder>
+</Solution>

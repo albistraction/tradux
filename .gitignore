@@ -1,0 +1,19 @@
+## .NET
+bin/
+obj/
+*.user
+.vs/
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db
+
+# Saída de dotnet pack
+artifacts/
+
+# Segredos locais do docker compose
+deploy/.env

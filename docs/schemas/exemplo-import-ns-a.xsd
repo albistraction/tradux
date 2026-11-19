@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FIXTURE ILUSTRATIVA — NAO E UM LAYOUT OFICIAL DE NENHUM MUNICIPIO OU
+  FORNECEDOR REAL.
+
+  Modulo "A", em namespace proprio, criado exclusivamente para exercitar
+  xs:import ENTRE NAMESPACES DIFERENTES na Fase 3 do projeto Tradux —
+  gap deixado registrado na analise de exemplo-composto.ANALISE.md (que so
+  cobre xs:include, mesmo namespace). Importado por exemplo-import-ns-b.xsd.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://exemplo.ilustrativo.tradux/import-a/v1"
+           targetNamespace="http://exemplo.ilustrativo.tradux/import-a/v1"
+           elementFormDefault="qualified">
+
+  <xs:complexType name="EnderecoType">
+    <xs:sequence>
+      <xs:element name="logradouro" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="codigoMunicipio" minOccurs="1" maxOccurs="1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="\d{7}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

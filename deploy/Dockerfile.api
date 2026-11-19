@@ -1,0 +1,18 @@
+# Microsserviço tradutor de XML (ADR-0025): a API HTTP.
+# Build a partir da raiz do repositório:
+#   docker build -f deploy/Dockerfile.api -t tradux-mapping-api .
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY global.json Directory.Build.props Tradux.slnx ./
+COPY src/ src/
+RUN dotnet publish src/Tradux.Api/Tradux.Api.csproj -c Release -o /app --nologo
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app ./
+ENV ASPNETCORE_URLS=http://+:8080 \
+    ASPNETCORE_ENVIRONMENT=Production
+EXPOSE 8080
+USER $APP_UID
+# Saúde (sem curl na imagem): o orquestrador consulta GET /health/live e GET /health/ready.
+ENTRYPOINT ["dotnet", "Tradux.Api.dll"]

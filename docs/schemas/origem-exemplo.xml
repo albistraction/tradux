@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Instancia ilustrativa de origem-exemplo.xsd (Fase 12). Dados ficticios. -->
+<NotaErp xmlns="http://exemplo.ilustrativo.tradux/erp/v1"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         versao="2.1" situacao="1">
+  <Identificacao>
+    <Numero>000123</Numero>
+    <Serie>A1</Serie>
+    <DataEmissao>2026-09-28</DataEmissao>
+    <Competencia>2026-09</Competencia>
+  </Identificacao>
+  <Prestador>
+    <Cnpj>12345678000199</Cnpj>
+    <Nome>Prestadora Exemplo Ltda</Nome>
+  </Prestador>
+  <Tomador>
+    <Cnpj>98765432000188</Cnpj>
+  </Tomador>
+  <Servico>
+    <Codigo>01.02.03</Codigo>
+    <Discriminacao>Consultoria em sistemas</Discriminacao>
+    <Valor moeda="BRL">1500.50</Valor>
+    <Desconto xsi:nil="true"/>
+  </Servico>
+  <Itens>
+    <Item>
+      <Descricao>Horas de consultoria</Descricao>
+      <Quantidade>10</Quantidade>
+      <ValorUnitario>150.05</ValorUnitario>
+    </Item>
+  </Itens>
+</NotaErp>
